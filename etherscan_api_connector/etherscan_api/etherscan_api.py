@@ -1,3 +1,4 @@
+import time
 import requests
 from requests.exceptions import RequestException
 
@@ -76,15 +77,16 @@ class etherscanApi (object):
             else:
                 self.response = self.response.json()
 
-    def parse_dump(dump, dict_keys):
+    def parse_dump(self, dump, dict_keys):
         pl = []
         for key in dict_keys:
             pl.append('{}: {}\n'.format(key, dump[key]))
         return pl
 
-    def create_csv(dump, dict_keys):
+    def create_csv(self, dump, dict_keys):
         #write header
-        csv = ''
+        return dump
+        csv = []
         csv_header = ''
         for key in dict_keys:
             csv_header += key + ','
@@ -100,7 +102,9 @@ class etherscanApi (object):
             ln += '\n'
             csv.append(ln)
             i  += 1
-        return ln
+            print(csv)
+            time.sleep(0.5)
+        return csv
 
     def post():
         pass
