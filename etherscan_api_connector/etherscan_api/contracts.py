@@ -35,7 +35,6 @@ class Contracts (etherscanApi):
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
             print(self.response['result']) #debug
             return self.response['result']
@@ -50,7 +49,6 @@ class Contracts (etherscanApi):
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            ret = self.parse_dump(self.response['result'], contract_src)
+            ret = self.parse_dump(self.response['result'], self.scontract_src)
             return ret

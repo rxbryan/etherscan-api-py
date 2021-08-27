@@ -7,8 +7,9 @@ class Stats(etherscanApi):
 
     def eth_stats(self, _action):
         self.url_bits = ['stats',
-            self.action,_action,
-            self.apikey, self.key]
+        self.action,_action,
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
@@ -16,11 +17,9 @@ class Stats(etherscanApi):
                 print(e)
         else:
             if self.response['message'] == 'OK':
-                print(self.response['result'])
                 return self.response['result']
             else:
                 self.print_error_message()
-        return None
                 
     def eth_totalsupply(self):
         return self.eth_stats('ethsupply')
@@ -32,8 +31,7 @@ class Stats(etherscanApi):
     preference can be either 'asc' or'desc'; clienttype: the Etherum node
     client to use, either 'geth' or 'parity'; syncmode: type of no to run
     on, either 'default' or 'archive' '''
-    def eth_nodesize(self, startdate, enddate, clienttype, 
-        syncmode, sort='asc'):
+    def eth_nodesize(self, startdate, enddate, clienttype, syncmode, sort='asc'):
         self.url_bits = ['stats', 
         self.action, 'chainsize',
         self.startdate, startdate,
@@ -41,8 +39,8 @@ class Stats(etherscanApi):
         self.clienttype, clienttype,
         self.syncmode, syncmode,
         self.sort, sort,
-        self.apikey, self.key]
-        
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
@@ -50,11 +48,9 @@ class Stats(etherscanApi):
                 print(e)
         else:
             if self.response['message'] == 'OK':
-                print(self.response['result'])
                 return self.response['result']
             else:
                 self.print_error_message()
-        return None
         
     def eth_total_nodecount(self):
         return self.eth_stats('nodecount')
@@ -67,8 +63,8 @@ class Stats(etherscanApi):
         self.startdate, startdate,
         self.enddate, enddate,
         self.sort, sort,
-        self.apikey, self.key]
-        
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
@@ -76,11 +72,9 @@ class Stats(etherscanApi):
                 print(e)
         else:
             if self.response['message'] == 'OK':
-                print(self.response['result'])
                 return self.response['result']
             else:
                 self.print_error_message()
-        return None
         
         
     def daily_txn_fee(self, startdate, enddate, sort='asc'):

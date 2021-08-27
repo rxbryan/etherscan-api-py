@@ -103,7 +103,7 @@ class etherscanApi (object):
             csv.append(ln)
             i  += 1
             print(csv)
-            time.sleep(0.5)
+            time.sleep(0.1)
         return csv
 
     def post():
@@ -111,5 +111,3 @@ class etherscanApi (object):
 
     def print_error_message(self):
         print('{} returned error message {}'.format(self.url, self.response['message']))
-
-

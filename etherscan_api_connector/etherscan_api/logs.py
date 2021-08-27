@@ -46,8 +46,8 @@ class Logs(etherscanApi):
             self.get()
         except etherscanApiExceptions as e:
                 print(e)
-                return None
         else:
-                print(self.response)
                 return self.response
+
            #i'm unable to test this for now
+           #Todo: implement remaining topic(opr)

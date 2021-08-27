@@ -5,92 +5,92 @@ class Accounts (etherscanApi):
 
     #keys for the result dictionary
     multi_bal = [
-        'account',
-        'balance'
-        ]
+            'account',
+            'balance'
+            ]
     tx_keys = [
-        'blockNumber',
-        'timeStamp',
-        'hash',
-        'nonce',
-        'blockHash',
-        'transactionIndex',
-        'from',
-        'to',
-        'value',
-        'gas',
-        'gasPrice',
-        'isError',
-        'txreceipt_status',
-        'input',
-        'contractAddress',
-        'cumulativeGasUsed',
-        'gasUsed',
-        'confirmations'
-        ]
+            'blockNumber',
+            'timeStamp',
+            'hash',
+            'nonce',
+            'blockHash',
+            'transactionIndex',
+            'from',
+            'to',
+            'value',
+            'gas',
+            'gasPrice',
+            'isError',
+            'txreceipt_status',
+            'input',
+            'contractAddress',
+            'cumulativeGasUsed',
+            'gasUsed',
+            'confirmations'
+            ]
     internal_tx_keys = [
-        'blockNumber',
-        'timeStamp',
-        'hash',
-        'from',
-        'to',
-        'value',
-        'contractAddress',
-        'input',
-        'type',
-        'gas',
-        'gasUsed',
-        'traceId',
-        'isError',
-        'errCode'
-        ]
+            'blockNumber',
+            'timeStamp',
+            'hash',
+            'from',
+            'to',
+            'value',
+            'contractAddress',
+            'input',
+            'type',
+            'gas',
+            'gasUsed',
+            'traceId',
+            'isError',
+            'errCode'
+            ]
     erc20_tx_keys = [
-        'blockNumber',
-        'timeStamp',
-        'hash',
-        'nonce',
-        'blockHash',
-        'from',
-        'contractAddress',
-        'to',
-        'value',
-        'tokenName',
-        'tokenSymbol',
-        'tokenDecimal',
-        'transactionIndex',
-        'gas',
-        'gasPrice',
-        'gasUsed',
-        'cumulativeGasUsed',
-        'input',
-        'confirmations'
-        ]
+            'blockNumber',
+            'timeStamp',
+            'hash',
+            'nonce',
+            'blockHash',
+            'from',
+            'contractAddress',
+            'to',
+            'value',
+            'tokenName',
+            'tokenSymbol',
+            'tokenDecimal',
+            'transactionIndex',
+            'gas',
+            'gasPrice',
+            'gasUsed',
+            'cumulativeGasUsed',
+            'input',
+            'confirmations'
+            ]
     erc721_tx_keys = [
-        'blockNumber',
-        'timeStamp',
-        'hash',
-        'nonce',
-        'blockHash',
-        'from',
-        'contractAddress',
-        'to',
-        'tokenID',
-        'tokenName',
-        'tokenSymbol',
-        'tokenDecimal',
-        'transactionIndex',
-        'gas',
-        'gasPrice',
-        'gasUsed',
-        'cumulativeGasUsed',
-        'input',
-        'confirmations'
-        ]
+            'blockNumber',
+            'timeStamp',
+            'hash',
+            'nonce',
+            'blockHash',
+            'from',
+            'contractAddress',
+            'to',
+            'tokenID',
+            'tokenName',
+            'tokenSymbol',
+            'tokenDecimal',
+            'transactionIndex',
+            'gas',
+            'gasPrice',
+            'gasUsed',
+            'cumulativeGasUsed',
+            'input',
+            'confirmations'
+            ]
     minedblocks_keys = [
-        'blockNumber',
-        'timeStamp',
-        'blockReward'
-        ]                
+            'blockNumber',
+            'timeStamp',
+            'blockReward'
+            ]
     
     def __init__(self, apikey, address):
         etherscanApi.__init__(self, apikey, address)
@@ -109,7 +109,6 @@ class Accounts (etherscanApi):
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
             if  self.response['message'] == 'OK':
                 if _action == 'balancemulti':
@@ -118,105 +117,96 @@ class Accounts (etherscanApi):
                     return self.response['result']
             else:
                 self.print_error_message()
-                return None
 
     def get_multiple_balances(self, _address='', tag='latest'):
         ret = self.get_balance(tag=tag, _address=_address, _action='balancemulti')
         return ret
 
     def get_all_transactions(self, startblock=0, endblock=99999999, sort='asc'):
-            txlist = []
-            module_action = 'txlist'
-            self.url_bits = ['account',
-            self.action, module_action,
-            self.address, self.blk_address,
-            self.startblock, str(startblock), 
-            self.endblock, str(endblock), 
-            self.sort, sort,
-            self.apikey, self.key
-            ]
-            self.generate_url()
-            try:
-                self.get()
-            except etherscanApiExceptions as e:
+        txlist = []
+        self.url_bits = ['account',
+        self.action, 'txlist',
+        self.address, self.blk_address,
+        self.startblock, str(startblock), 
+        self.endblock, str(endblock), 
+        self.sort, sort,
+        self.apikey, self.key
+        ]
+        self.generate_url()
+        try:
+            self.get()
+        except etherscanApiExceptions as e:
                 print(e)
+        else:
+            if self.response['message'] == 'OK':
+                txlist=self.response['result']
             else:
-                if self.response['message'] == 'OK':
-                    txlist=self.response['result']
-                else:
-                    self.print_error_message()
-            return self.create_csv(txlist, self.tx_keys)
+                self.print_error_message()
+        return self.create_csv(txlist, self.tx_keys)
         
 
     def get_internal_transactions(self, endblock, startblock=0, sort='asc'):
-            txlist = []
-            module_action = 'txlistinternal'
-            self.url_bits = ['account',
-            self.action, module_action,
-            self.address, self.blk_address,
-            self.startblock, str(startblock), 
-            self.endblock, str(endblock), 
-            self.sort, sort,
-            self.apikey, self.key]
-            
-            self.generate_url()       
-            try:
-                self.get()
-            except etherscanApiExceptions as e:
+        txlist = []
+        self.url_bits = ['account',
+        self.action, 'txlistinternal',
+        self.address, self.blk_address,
+        self.startblock, str(startblock), 
+        self.endblock, str(endblock), 
+        self.sort, sort,
+        self.apikey, self.key
+        ]
+        self.generate_url()       
+        try:
+            self.get()
+        except etherscanApiExceptions as e:
                 print(e)
+        else:
+            if self.response['message'] == 'OK':
+                txlist.append(self.response['result'])
             else:
-                if self.response['message'] == 'OK':
-                    txlist.append(self.response['result'])
-                else:
-                    self.print_error_message()
-            return self.create_csv(txlist, self.internal_tx_keys)
+                self.print_error_message()
+        return self.create_csv(txlist, self.internal_tx_keys)
 
     def get_internal_txhash(self, txhash):
-        module_action = 'txlistinternal'
         self.url_bits = ['account',
-        self.action, module_action,
+        self.action, 'txlistinternal',
         self.txhash, txhash,
-        self.apikey, self.key]
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
             if self.response['message'] == 'OK':
                 return self.parse_dump(self.response['result'], self.internal_tx_keys)
             else:
                 self.print_error_message()
-            return None
-         
 
     def get_internal_blk(self, endblock, startblock=0, sort='asc'):
-            txlist = []
-            module_action = 'txlistinternal'
-            self.url_bits = ['account',
-            self.action, module_action,
-            self.startblock, str(startblock), 
-            self.endblock, str(endblock), 
-            self.sort, sort,
-            self.apikey, self.key]
-             
-            self.generate_url()
-            try:
-                self.get()
-            except etherscanApiExceptions as e:
-                print(e)
+        txlist = []
+        self.url_bits = ['account',
+        self.action, 'txlistinternal',
+        self.startblock, str(startblock), 
+        self.endblock, str(endblock), 
+        self.sort, sort,
+        self.apikey, self.key
+        ]
+        self.generate_url()
+        try:
+            self.get()
+        except etherscanApiExceptions as e:
+            print(e)
 
+        else:
+            if self.response['message'] == 'OK':
+                txlist.append(self.response['result'])
             else:
-                if self.response['message'] == 'OK':
-                    txlist.append(self.response['result'])
-                else:
-                    self.print_error_message()
-
-            return self.create_csv(txlist, self.internal_tx_keys)
+                self.print_error_message()
+        return self.create_csv(txlist, self.internal_tx_keys)
         
     def get_erc20_transfer_events(self, contractaddress='', sort='asc'):
-
         temp_address = ''
         temp_contractaddress = ''
         if self.blk_address and contractaddress:
@@ -229,27 +219,26 @@ class Accounts (etherscanApi):
         else:
             raise etherscanApiExceptions('parameters for get_erc20_transfer_events invalid')
     
-            txlist = []
-            module_action = 'tokentx'
-            self.url_bits = ['account',
-            self.action, module_action,
-            temp_contractaddress, contractaddress,
-            temp_address, self.blk_address,
-            self.sort, sort,
-            self.apikey, self.key]
-
-            self.generate_url()       
-            try:
-                self.get()
-            except etherscanApiExceptions as e:
-                print(e)
+        txlist = []
+        self.url_bits = ['account',
+        self.action, 'tokentx',
+        temp_contractaddress, contractaddress,
+        temp_address, self.blk_address,
+        self.sort, sort,
+        self.apikey, self.key
+        ]
+        self.generate_url()       
+        try:
+            self.get()
+        except etherscanApiExceptions as e:
+            print(e)
+        else:
+            if self.response['message'] == 'OK':
+                txlist.append(self.response['result'])
             else:
-                if self.response['message'] == 'OK':
-                    txlist.append(self.response['result'])
-                else:
-                    self.print_error_message()
-            return self.create_csv(txlist, self.erc20_tx_keys)
-        
+                self.print_error_message()
+        return self.create_csv(txlist, self.erc20_tx_keys)
+
     def get_erc721_transfer_events(self, contractaddress = '', sort='asc'):
         
         temp_address = ''
@@ -263,71 +252,63 @@ class Accounts (etherscanApi):
             temp_address = self.address
         else:
             raise etherscanApiExceptions('parameters for get_erc721_transfer_events invalid')
-            txlist = []
-            module_action = 'tokennfttx'
-            self.url_bits = ['account',
-            self.action, module_action,
-            temp_contractaddress, contractaddress,
-            temp_address, self.blk_address,
-            self.page, str(page),
-            self.offset, str(offset),
-            self.sort, sort,
-            self.apikey, self.key]
-            
-            self.generate_url()
-            try:
-                self.get()
-            except etherscanApiExceptions as e:
-                print(e)
-            else:
-                if self.response['message'] == 'OK':
-                    txlist.append(self.response['result'])
-                else:
-                    self.print_error_message()
-            return self.create_csv(txlist, self.erc721_tx_keys)
-        
 
-    def get_blocks_mined(self, blocktype='blocks'):
-        
-            blks_mined = []
-            module_action = 'getminedblocks'
-            self.url_bits = ['account',
-            self.action, module_action,
-            self.address, self.blk_address,
-            self.blocktype, blocktype,
-            self.apikey, self.key]
-            
-            self.generate_url()
-            try:
-                self.get()
-            except etherscanApiExceptions as e:
-                print(e)
-            else:
-                if self.response['message'] == 'OK':
-                    blks_mined.append(self.response['result'])
-                else:
-                    self.print_error_message()
-            return self.create_csv(blks_mined, self.minedblocks_keys)
-        
-    def get_historical_ether_balance(self, blockno):  #requires pro api
-        module_action = 'balancehistory'
+        txlist = []
         self.url_bits = ['account',
-        self.action, module_action,
-        self.address, self.blk_address,
-        self.blockno,str(blockno),
-        self.apikey, self.key]
-        
+        self.action, 'tokennfttx',
+        temp_contractaddress, contractaddress,
+        temp_address, self.blk_address,
+        self.page, str(page),
+        self.offset, str(offset),
+        self.sort, sort,
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
             if self.response['message'] == 'OK':
-                print(self.response['result'])
+                txlist.append(self.response['result'])
             else:
-                self.print_error_message
+                self.print_error_message()
+        return self.create_csv(txlist, self.erc721_tx_keys)
 
-        return self.response['result']
+    def get_blocks_mined(self, blocktype='blocks'):
+        blks_mined = []
+        self.url_bits = ['account',
+        self.action, 'getminedblocks',
+        self.address, self.blk_address,
+        self.blocktype, blocktype,
+        self.apikey, self.key
+        ]
+        self.generate_url()
+        try:
+            self.get()
+        except etherscanApiExceptions as e:
+            print(e)
+        else:
+            if self.response['message'] == 'OK':
+                blks_mined.append(self.response['result'])
+            else:
+                self.print_error_message()
+        return self.create_csv(blks_mined, self.minedblocks_keys)
         
+    def get_historical_ether_balance(self, blockno):  #requires pro api
+        self.url_bits = ['account',
+        self.action, 'balancehistory',
+        self.address, self.blk_address,
+        self.blockno,str(blockno),
+        self.apikey, self.key
+        ]
+        self.generate_url()
+        try:
+            self.get()
+        except etherscanApiExceptions as e:
+            print(e)
+        else:
+            if self.response['message'] == 'OK':
+                return self.response['result']
+            else:
+                self.print_error_message()

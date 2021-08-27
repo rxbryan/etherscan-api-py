@@ -8,15 +8,14 @@ class Proxy(etherscanApi):
     def get_most_recent_block(self):
         self.url_bits = ['proxy',
         self.action,'eth_blockNumber',
-        self.apikey, self.key]
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            print(self.response['result'])
             return self.response['result']
 
     def get_block_info(self, tag, boolean):
@@ -30,15 +29,14 @@ class Proxy(etherscanApi):
         self.action, 'eth_getBlockByNumber',
         self.tag, str(tag),
         self.boolean, boolean,
-        self.apikey, self.key]
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            print(self.response['result'])
             return self.response['result']
 
     def get_uncle_info(self, tag, index):
@@ -48,47 +46,42 @@ class Proxy(etherscanApi):
         self.action, 'eth_getUncleByBlockNumberAndIndex',
         self.tag, str(tag),
         self.index, str(index),
-        self.apikey, self.key]
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            print(self.response)
-            return self.response
+            return self.response['result']
 
     def get_no_of_transactions_blk(self, tag):#tag: block no in hex
         self.url_bits = ['proxy',
         self.action, 'eth_getBlockTransactionCountByNumber',
         self.tag, str(tag),
-        self.apikey, self.key]
-        
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            print(self.response['result'])
             return self.response['result']
 
     def get_transaction_info_byhash(self, txhash):
         self.url_bits = ['proxy',
         self.action,'eth_getTransactionByHash',
         self.txhash, txhash,
-        self.apikey, self.key]
-        
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            print(self.response['result'])
             return self.response['result']
 
     def get_transaction_info_blkno_index(self, tag, index):
@@ -98,17 +91,15 @@ class Proxy(etherscanApi):
         self.action, 'eth_getTransactionByBlockNumberAndIndex',
         self.tag, str(tag),
         self.index, str(index),
-        self.apikey, self.key]
-        
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            print(self.response)
-            return self.response
+            return self.response['result']
 
     def eth_submit_rawtransactions(self, hex_data): 
         #hex = string representing signed raw data.
@@ -116,32 +107,28 @@ class Proxy(etherscanApi):
         self.url_bits = ['proxy',
         self.action, 'eth_sendRawTransaction',
         self._hex, str(hex_data),
-        self.apikey, self.key]
-        
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            print(self.response['result'])
             return self.response['result']
 
     def eth_getTransactionReceipt(self, txhash):
         self.url_bits = ['proxy',
         self.action, 'eth_getTransactionReceipt',
         self.txhash, txhash,
-        self.apikey, self.key]
-        
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            print(self.response['result'])
             return self.response['result']
 
     def eth_call(self, data, tag, to=''):
@@ -155,16 +142,14 @@ class Proxy(etherscanApi):
         self.to, to,
         self.data, data,
         self.tag, tag,
-        self.apikey, self.key]
-        
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            print(self.response['result'])
             return self.response['result']
 
     def eth_getCode(self, tag, _address=''):
@@ -172,18 +157,17 @@ class Proxy(etherscanApi):
         if not _address:
             _address = self.blk_address
         self.url_bits = ['proxy',
-                self.action, 'eth_getCode',
-                self.address, _address,
-                self.tag, tag,
-                self.apikey, self.key]
+        self.action, 'eth_getCode',
+        self.address, _address,
+        self.tag, tag,
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            print(self.response['result'])
             return self.response['result']
 
     def eth_getstorageAt(self, position, tag, _address=''):
@@ -195,31 +179,29 @@ class Proxy(etherscanApi):
             _address = self.blk_address
 
         self.url_bits = ['proxy',
-                self.action, 'eth_getStorageAt',
-                self.address, _address,
-                self.position, str(position),
-                self.tag, tag,
-                self.apikey, self.key]
+        self.action, 'eth_getStorageAt',
+        self.address, _address,
+        self.position, str(position),
+        self.tag, tag,
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print(e)
-            return None
         else:
-            print(self.response['result'])
             return self.response['result']
 
     def eth_gasPrice(self):
         self.url_bits = ['proxy',
-                self.action, 'eth_gasPrice',
-                self.apikey, self.key]
+        self.action, 'eth_gasPrice',
+        self.apikey, self.key]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
-            print(e)
-            return None
+            print(e)           
         else:
             print(self.response['result'])
             return self.response['result']
@@ -240,14 +222,12 @@ class Proxy(etherscanApi):
         self.value, str(value),
         self.gasPrice, str(gasPrice),
         self.gas, str(gas),
-        self.apikey, self.key]
-        
+        self.apikey, self.key
+        ]
         self.generate_url()
         try:
             self.get()
         except etherscanApiExceptions as e:
             print (e)
-            return None
         else:
-            print(self.response)
             return self.response
