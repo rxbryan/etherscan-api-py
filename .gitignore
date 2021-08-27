@@ -1,0 +1,4 @@
+#ignore log files
+*log
+#ignore all test files, for now
+test/
