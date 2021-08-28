@@ -4,9 +4,9 @@ from etherscan_api import etherscanApiExceptions
 class Contracts (etherscanApi):
     
     #keys for parsing contract source code
-    contract_src = [
+    CONTRACT_SRC = [
                 'SourceCode',
-                'ABi',
+                'ABI',
                 'ContractName',
                 'CompilerVersion',
                 'OptimizationUsed',
@@ -50,5 +50,5 @@ class Contracts (etherscanApi):
         except etherscanApiExceptions as e:
             print(e)
         else:
-            ret = self.parse_dump(self.response['result'], self.scontract_src)
+            ret = self.parse_dump(self.response['result'], self.CONTRACT_SRC)
             return ret

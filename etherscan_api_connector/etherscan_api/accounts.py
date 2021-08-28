@@ -258,8 +258,6 @@ class Accounts (etherscanApi):
         self.action, 'tokennfttx',
         temp_contractaddress, contractaddress,
         temp_address, self.blk_address,
-        self.page, str(page),
-        self.offset, str(offset),
         self.sort, sort,
         self.apikey, self.key
         ]

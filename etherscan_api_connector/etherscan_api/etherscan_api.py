@@ -79,8 +79,9 @@ class etherscanApi (object):
 
     def parse_dump(self, dump, dict_keys):
         pl = []
-        for key in dict_keys:
-            pl.append('{}: {}\n'.format(key, dump[key]))
+        for ln in dump:
+            for key in dict_keys:
+                pl.append('{}: {}\n'.format(key, ln[key]))
         return pl
 
     def create_csv(self, dump, dict_keys):
