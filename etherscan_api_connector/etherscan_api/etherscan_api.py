@@ -86,25 +86,23 @@ class etherscanApi (object):
 
     def create_csv(self, dump, dict_keys):
         #write header
-        return dump
+        #return dump
+        ln = ''
         csv = []
         csv_header = ''
         for key in dict_keys:
             csv_header += key + ','
         csv_header += '\n'
         csv.append(csv_header)
-        
-        i = 0
-        ln = ''
-        while i < len(dump):
+
+        for c in dump:
+            #print(dump)
             for key in dict_keys:
-                if key in dump[i]:
-                    ln += dump[i][key] + ','
+                if key in c:
+                    ln += c[key] + ','
             ln += '\n'
             csv.append(ln)
-            i  += 1
-            print(csv)
-            time.sleep(0.1)
+            time.sleep(0.01)
         return csv
 
     def post():

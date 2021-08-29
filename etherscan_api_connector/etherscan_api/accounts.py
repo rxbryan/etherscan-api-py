@@ -4,11 +4,11 @@ from etherscan_api import etherscanApiExceptions
 class Accounts (etherscanApi):
 
     #keys for the result dictionary
-    multi_bal = [
+    BAL_KEYS = [
             'account',
             'balance'
             ]
-    tx_keys = [
+    TX_KEYS = [
             'blockNumber',
             'timeStamp',
             'hash',
@@ -28,7 +28,7 @@ class Accounts (etherscanApi):
             'gasUsed',
             'confirmations'
             ]
-    internal_tx_keys = [
+    INTERNAL_TX_KEYS = [
             'blockNumber',
             'timeStamp',
             'hash',
@@ -44,7 +44,7 @@ class Accounts (etherscanApi):
             'isError',
             'errCode'
             ]
-    erc20_tx_keys = [
+    ERC20_TX_KEYS = [
             'blockNumber',
             'timeStamp',
             'hash',
@@ -65,7 +65,7 @@ class Accounts (etherscanApi):
             'input',
             'confirmations'
             ]
-    erc721_tx_keys = [
+    ERC721_TX_KEYS = [
             'blockNumber',
             'timeStamp',
             'hash',
@@ -86,7 +86,7 @@ class Accounts (etherscanApi):
             'input',
             'confirmations'
             ]
-    minedblocks_keys = [
+    MINEDBLOCKS_KEYS = [
             'blockNumber',
             'timeStamp',
             'blockReward'
@@ -112,7 +112,7 @@ class Accounts (etherscanApi):
         else:
             if  self.response['message'] == 'OK':
                 if _action == 'balancemulti':
-                    return self.create_csv(self.response['result'], self.multi_bal)
+                    return self.create_csv(self.response['result'], self.BAL_KEYS)
                 else:
                     return self.response['result']
             else:
@@ -123,7 +123,6 @@ class Accounts (etherscanApi):
         return ret
 
     def get_all_transactions(self, startblock=0, endblock=99999999, sort='asc'):
-        txlist = []
         self.url_bits = ['account',
         self.action, 'txlist',
         self.address, self.blk_address,
@@ -139,14 +138,12 @@ class Accounts (etherscanApi):
                 print(e)
         else:
             if self.response['message'] == 'OK':
-                txlist=self.response['result']
+                txlist = self.response['result']
+                return self.create_csv(txlist, self.TX_KEYS)
             else:
                 self.print_error_message()
-        return self.create_csv(txlist, self.tx_keys)
-        
 
     def get_internal_transactions(self, endblock, startblock=0, sort='asc'):
-        txlist = []
         self.url_bits = ['account',
         self.action, 'txlistinternal',
         self.address, self.blk_address,
@@ -162,10 +159,11 @@ class Accounts (etherscanApi):
                 print(e)
         else:
             if self.response['message'] == 'OK':
-                txlist.append(self.response['result'])
+                txlist = self.response['result']
+                return self.create_csv(txlist, self.INTERNAL_TX_KEYS)
             else:
                 self.print_error_message()
-        return self.create_csv(txlist, self.internal_tx_keys)
+        
 
     def get_internal_txhash(self, txhash):
         self.url_bits = ['account',
@@ -180,12 +178,13 @@ class Accounts (etherscanApi):
             print(e)
         else:
             if self.response['message'] == 'OK':
-                return self.parse_dump(self.response['result'], self.internal_tx_keys)
+                return self.parse_dump(
+                        self.response['result'], 
+                        self.INTERNAL_TX_KEYS)
             else:
                 self.print_error_message()
 
     def get_internal_blk(self, endblock, startblock=0, sort='asc'):
-        txlist = []
         self.url_bits = ['account',
         self.action, 'txlistinternal',
         self.startblock, str(startblock), 
@@ -201,10 +200,11 @@ class Accounts (etherscanApi):
 
         else:
             if self.response['message'] == 'OK':
-                txlist.append(self.response['result'])
+                txlist = self.response['result']
+                return self.create_csv(txlist, self.INTERNAL_TX_KEYS)
             else:
                 self.print_error_message()
-        return self.create_csv(txlist, self.internal_tx_keys)
+        
         
     def get_erc20_transfer_events(self, contractaddress='', sort='asc'):
         temp_address = ''
@@ -234,10 +234,10 @@ class Accounts (etherscanApi):
             print(e)
         else:
             if self.response['message'] == 'OK':
-                txlist.append(self.response['result'])
+                txlist = self.response['result']
+                return self.create_csv(txlist, self.ERC20_TX_KEYS)
             else:
                 self.print_error_message()
-        return self.create_csv(txlist, self.erc20_tx_keys)
 
     def get_erc721_transfer_events(self, contractaddress = '', sort='asc'):
         
@@ -253,7 +253,6 @@ class Accounts (etherscanApi):
         else:
             raise etherscanApiExceptions('parameters for get_erc721_transfer_events invalid')
 
-        txlist = []
         self.url_bits = ['account',
         self.action, 'tokennfttx',
         temp_contractaddress, contractaddress,
@@ -268,13 +267,13 @@ class Accounts (etherscanApi):
             print(e)
         else:
             if self.response['message'] == 'OK':
-                txlist.append(self.response['result'])
+                txlist = self.response['result']
+                return self.create_csv(txlist, self.ERC721_TX_KEYS)
             else:
                 self.print_error_message()
-        return self.create_csv(txlist, self.erc721_tx_keys)
+        
 
     def get_blocks_mined(self, blocktype='blocks'):
-        blks_mined = []
         self.url_bits = ['account',
         self.action, 'getminedblocks',
         self.address, self.blk_address,
@@ -288,10 +287,10 @@ class Accounts (etherscanApi):
             print(e)
         else:
             if self.response['message'] == 'OK':
-                blks_mined.append(self.response['result'])
+                blks_mined = self.response['result']
+                return self.create_csv(blks_mined, self.MINEDBLOCKS_KEYS)
             else:
                 self.print_error_message()
-        return self.create_csv(blks_mined, self.minedblocks_keys)
         
     def get_historical_ether_balance(self, blockno):  #requires pro api
         self.url_bits = ['account',
