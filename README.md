@@ -6,7 +6,9 @@ Wrote this a while working on a data analysis project. It provides bindings for 
 You need to have the python request module installed. 
 
 For linux, run:
+
     pip3 install requests
+
 for other operations, google how to install "requests"
 
 ## How to use
