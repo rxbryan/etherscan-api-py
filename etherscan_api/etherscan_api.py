@@ -85,8 +85,6 @@ class etherscanApi (object):
         return pl
 
     def create_csv(self, dump, dict_keys):
-        #write header
-        #return dump
         ln = ''
         csv = []
         csv_header = ''
@@ -96,13 +94,12 @@ class etherscanApi (object):
         csv.append(csv_header)
 
         for c in dump:
-            #print(dump)
             for key in dict_keys:
                 if key in c:
                     ln += c[key] + ','
             ln += '\n'
             csv.append(ln)
-            time.sleep(0.01)
+            time.sleep(0.01)        
         return csv
 
     def post():
